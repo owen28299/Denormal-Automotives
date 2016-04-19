@@ -1,0 +1,20 @@
+{
+  "name": "Denormal-Automotives",
+  "version": "1.0.0",
+  "description": "### DB Modeling Exercise in PostgreSQL",
+  "main": "index.js",
+  "scripts": {
+    "watch": "nodemon -e sql --exec psql -f normal_cars.sql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owen28299/Denormal-Automotives.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owen28299/Denormal-Automotives/issues"
+  },
+  "homepage": "https://github.com/owen28299/Denormal-Automotives#readme"
+}
