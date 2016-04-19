@@ -105,3 +105,29 @@ WHERE models2.model_title = car_models3.model_title
   AND models2.model_code = car_models3.model_code
   AND years2.year = car_models3.year;
 
+-- SELECT make_title FROM manufacturers;
+
+-- SELECT model_title from models, manufacturers WHERE
+--   manufacturers.make_code = 'VOLKS' AND
+--   models.manufacturer = manufacturers.id;
+
+-- SELECT manufacturers.make_code, models.model_code, models.model_title, years.year
+-- FROM car_model_years, models, years, manufacturers WHERE
+--   car_model_years.model = models.id
+--   AND  car_model_years.year = years.id
+--   AND models.manufacturer = manufacturers.id
+--   AND manufacturers.make_code = 'LAM';
+
+SELECT manufacturers.make_title,
+       manufacturers.make_code,
+       models.model_title,
+       models.model_code,
+       years.year
+FROM manufacturers,
+     models,
+     years,
+     car_model_years
+WHERE car_model_years.model = models.id AND
+      manufacturers.id = models.manufacturer AND
+      car_model_years.year = years.id AND
+      years.year BETWEEN 2010 AND 2015
