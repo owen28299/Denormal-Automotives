@@ -7,7 +7,7 @@ DROP DATABASE IF EXISTS normal_cars;
 CREATE DATABASE normal_cars OWNER normal_user;
 
 
-\c denormal_cars;
+\c normal_cars;
 
 
 DROP TABLE IF EXISTS manufacturers CASCADE;
@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS car_models CASCADE;
 
 -- Manufacturers table
 CREATE TABLE manufacturers (
-  id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   make_title varchar(125),
   make_code varchar(125)
 );
@@ -35,7 +35,7 @@ INSERT INTO manufacturers (make_title, make_code)
 
 -- Models table
 CREATE TABLE models (
-  id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   model_title varchar(125),
   model_code varchar(125),
   manufacturer integer REFERENCES manufacturers
@@ -70,18 +70,38 @@ FROM car_models2 JOIN manufacturers ON
 car_models2.make_title = manufacturers.make_title;
 
 
-SELECT * FROM models LIMIT 25;
+-- years table
+CREATE TABLE years (
+  id SERIAL PRIMARY KEY,
+  year integer NOT NULL
+);
 
--- -- years table
--- CREATE TABLE years (
---   id SERIAL NOT NULL UNIQUE PRIMARY KEY,
---   year integer NOT NULL
--- );
+INSERT INTO years (year)
+  SELECT DISTINCT year FROM car_models
+  ORDER BY year ASC;
 
--- INSERT INTO years (year)
---   SELECT DISTINCT year FROM car_models
---   ORDER BY year ASC;
+-- car model years table
+CREATE TABLE car_model_years (
+  id SERIAL PRIMARY KEY,
+  model integer REFERENCES models,
+  year integer REFERENCES years
+);
 
--- -- SELECT * FROM years;
-
+INSERT INTO car_model_years (model, year)
+  WITH models2 AS (
+    SELECT id, model_title, model_code
+    FROM models
+    ),
+  years2 AS (
+    SELECT id, year
+    FROM years
+    ),
+  car_models3 AS (
+    SELECT model_title, model_code, year
+    FROM car_models
+    )
+SELECT DISTINCT models2.id , years2.id FROM models2, years2, car_models3
+WHERE models2.model_title = car_models3.model_title
+  AND models2.model_code = car_models3.model_code
+  AND years2.year = car_models3.year;
 
