@@ -21,5 +21,7 @@ CREATE DATABASE denormal_cars OWNER denormal_user;
 --   FROM car_models
 --   WHERE make_code = 'LAM';
 
--- SELECT DISTINCT * FROM car_models
---   WHERE year BETWEEN 2010 AND 2015;
+\timing
+
+SELECT DISTINCT * FROM car_models
+  WHERE year BETWEEN 2010 AND 2015;

@@ -105,11 +105,19 @@ WHERE models2.model_title = car_models3.model_title
   AND models2.model_code = car_models3.model_code
   AND years2.year = car_models3.year;
 
+-- In normal.sql Create a query to get a list of all make_title values in the car_models table. (should have 71 results
 -- SELECT make_title FROM manufacturers;
 
+-- In normal.sql Create a query to list all model_title values where the make_code is 'VOLKS' (should have 27 results)
 -- SELECT model_title from models, manufacturers WHERE
 --   manufacturers.make_code = 'VOLKS' AND
 --   models.manufacturer = manufacturers.id;
+
+
+-- In normal.sql Create a query to list all make_code, model_code, model_title, and year from car_models where the make_code is 'LAM' (should have 136 rows)
+
+\timing
+----Using CROSS JOINS
 
 -- SELECT manufacturers.make_code, models.model_code, models.model_title, years.year
 -- FROM car_model_years, models, years, manufacturers WHERE
@@ -118,16 +126,49 @@ WHERE models2.model_title = car_models3.model_title
 --   AND models.manufacturer = manufacturers.id
 --   AND manufacturers.make_code = 'LAM';
 
-SELECT manufacturers.make_title,
-       manufacturers.make_code,
-       models.model_title,
-       models.model_code,
-       years.year
-FROM manufacturers,
-     models,
-     years,
-     car_model_years
-WHERE car_model_years.model = models.id AND
-      manufacturers.id = models.manufacturer AND
-      car_model_years.year = years.id AND
-      years.year BETWEEN 2010 AND 2015
+----Using INNER JOINS
+
+-- SELECT manufacturers.make_code, models.model_code, models.model_title, years.year
+-- FROM manufacturers
+-- INNER JOIN models
+-- ON manufacturers.id = models.manufacturer
+-- AND manufacturers.make_code = 'LAM'
+-- INNER JOIN car_model_years
+-- ON car_model_years.model = models.id
+-- INNER JOIN years
+-- ON car_model_years.year = years.id;
+
+
+-- In normal.sql Create a query to list all fields from all car_models in years between 2010 and 2015 (should have 7884 rows)
+
+----Using cross joins
+
+-- SELECT manufacturers.make_title,
+--        manufacturers.make_code,
+--        models.model_title,
+--        models.model_code,
+--        years.year
+-- FROM manufacturers,
+--      models,
+--      years,
+--      car_model_years
+-- WHERE car_model_years.model = models.id AND
+--       manufacturers.id = models.manufacturer AND
+--       car_model_years.year = years.id AND
+--       years.year BETWEEN 2010 AND 2015
+
+----Using inner joins
+
+-- SELECT manufacturers.make_title,
+--        manufacturers.make_code,
+--        models.model_title,
+--        models.model_code,
+--        years.year
+-- FROM manufacturers
+-- INNER JOIN models
+-- ON manufacturers.id = models.manufacturer
+-- INNER JOIN car_model_years
+-- ON models.id = car_model_years.model
+-- INNER JOIN years
+-- ON years.id = car_model_years.year
+-- AND years.year BETWEEN 2010 AND 2015;
